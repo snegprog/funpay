@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  php-funpay:
+    build: php
+    container_name: php
+    depends_on:
+      - db-funpay
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ../app:/var/www/app
+  db-funpay:
+    image: mysql:5.7
+    container_name: mysql_57
+    restart: always
+    command: --query_cache_type=1 --query_cache_limit=10485760 --query_cache_size=1048576000
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "funpay"
+    labels:
+      traefik.enable: "false"
