@@ -14,6 +14,8 @@ class Database implements DatabaseInterface
         '#' => true,
     ];
 
+    private const SPECIAL_SYMBOL = '-1';
+
     public function __construct(
         readonly private mysqli $mysqli
     ) {
@@ -42,7 +44,7 @@ class Database implements DatabaseInterface
                     $block .= $query[$i];
                 }
                 // Если параметр является специальным значением, то пропускаем блок
-                if ('-1' === $args[$iter]) {
+                if (self::SPECIAL_SYMBOL === $args[$iter]) {
                     continue;
                 }
 
@@ -92,7 +94,7 @@ class Database implements DatabaseInterface
      */
     public function skip(): string
     {
-        return '-1';
+        return self::SPECIAL_SYMBOL;
     }
 
     /**
